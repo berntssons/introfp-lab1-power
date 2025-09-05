@@ -47,24 +47,23 @@ power n k = n * power n (k-1)
 -- Part B ----------------------------------------------------------------------
 
 power1 :: Int -> Int -> Int
-
--- Case for negative exponents:
+-- | Case for negative exponents:
 power1 n k
   | k < 0 = error "power: negative argument"
--- Case for k >= 0:
+-- | Case for k >= 0:
 power1 n k = product (replicate k n)
--- Separate case for k = 0 not needed since product [] returns 1
+-- ^ Separate case for k = 0 not needed since product [] returns 1
 
 -- Part C ----------------------------------------------------------------------
 
 power2 :: Int -> Int -> Int
-
 power2 n k
   | k < 0 = error "power: negative argument"
 power2 n 0 = 1
 power2 n k
   | even k = power2 (n * n) (k `div` 2)
   | otherwise = n * power2 n (k - 1)
+-- ^ Given equations for lab, even k: (n*n)^(k/2) and odd k: n(n^(k-1))
 
 -- Part D ----------------------------------------------------------------------
 
@@ -96,6 +95,7 @@ comparePower2 n k = power n k == power2 n k
 -- Part D.3
 testValues :: [(Int, Int)]
 testValues = [(2, 3), (3, 4), (3, 0), (0, 5), ((-5), 3)]
+-- ^ Same case values as in individual tests
 
 testAll :: Bool
 testAll = and [ comparePower1 n k && comparePower2 n k | x <- testValues, let n = fst x, let k = snd x ]
