@@ -101,21 +101,13 @@ testAll :: Bool
 testAll = and [ comparePower1 n k && comparePower2 n k | x <- testValues, let n = fst x, let k = snd x ]
 
 -- Part E
-formatString :: String -> String
-formatString s = s ++ concat (replicate (10 - (length s)) " ")
-
-formatInt :: Int -> String
-formatInt n = formatString (show n)
-
 rows :: Int -> Int -> [[String]]
 rows n k
-  | k < 0 = [map formatString ["k", "power", "power1", "power2"]]
-  | otherwise = map formatInt [k, power n k, power1 n k, power2 n k] : rows n (k - 1)
+  | k < 0 = [["k", "power", "power1", "power2"]]
+  | otherwise = map show [k, power n k, power1 n k, power2 n k] : rows n (k - 1)
 
-table n k = putStr ( unlines [ concat list | i <- [0..(k + 1)], let list = (rows n k)!!(k + 1 - i) ])
+addSpaces :: String -> Int -> String
+addSpaces s n = s ++ concat (replicate (n - (length s)) " ")
 
--- Calculate result for k and add to array for each function
--- Move on to next k and do the same
-
-
--- Calculate results
+table :: Int -> Int -> IO ()
+table n k = putStr ( unlines [ concat (map (\x -> addSpaces x 20) list) | i <- [0..(k + 1)], let list = (rows n k)!!(k + 1 - i) ])
